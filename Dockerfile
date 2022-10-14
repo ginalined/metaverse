@@ -1,5 +1,5 @@
 FROM debian:latest
- #Install git, bash, java, maven, curl, nano, npm
+ #Install git, bash, java, maven, curl, nano, npm, nodejs
 RUN apt update && apt install -y \
  git \
  bash-completion \
@@ -7,29 +7,18 @@ RUN apt update && apt install -y \
  maven\
  curl\
  nano\
- npm
-
-# Install nodejs
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get install -y nodejs
-
-RUN npm install -g three
-RUN npm install -g solipsism
-RUN npm install -g browserify
+ npm\
+ nodejs
 
 COPY . /home/vrspace/
 
-
-WORKDIR /home/vrspace/
+WORKDIR /home/vrspace/server
 RUN mvn clean install
-
-# Get execution permission of start.sh
-RUN chmod 744 /home/vrspace/start.sh
 
 #Set working directory
 WORKDIR /home/vrspace/server/target/
 
-CMD /home/vrspace/start.sh
+CMD java -jar server-0.4.7-SNAPSHOT.jar
 
 EXPOSE 4001
 EXPOSE 4002
@@ -38,3 +27,5 @@ EXPOSE 8002
 EXPOSE 8003
 EXPOSE 8080
 EXPOSE 8443
+
+
