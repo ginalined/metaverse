@@ -37,7 +37,7 @@ jobs:
           
       - name: Deploy docker image to GKE cluster
         run: |-
-          kubectl create deployment vrspace --image=gcr.io/metaverse-363005/vrserver:v1
+          kubectl create deployment vrspace --image=gcr.io/githubaction-364720/cloudaction
       
       - name: Scale it to other pods in the cluster (Optional)
         run: |-
