@@ -21,11 +21,19 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY_JSON }}
           service_account_email: "githubactionmanager@githubaction-364720.iam.gserviceaccount.com"
           project_id: githubaction-364720
-
-      - name: Building (🏗)
+          
+#       - name: Building (🏗)
+#         run: |-
+#           gcloud builds submit \
+#             --tag gcr.io/githubaction-364720/cloudaction
+            
+      - name: Set Local Region
         run: |-
-          gcloud builds submit \
-            --tag gcr.io/githubaction-364720/cloudaction
+          gcloud config set compute/region us-central1
+          
+      - name: Create Local Zone
+        run: |-
+          gcloud config set compute/zone us-central1-a
             
       - name: Create a GKE cluster
         run: |-
