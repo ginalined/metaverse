@@ -39,9 +39,9 @@ jobs:
 #         run: |-
 #           gcloud container clusters create vrspace-cluster
           
-#       - name: Ensure connection GKE cluster
-#         run: |-
-#           gcloud container clusters get-credentials vrspace-cluster
+      - name: Ensure connection GKE cluster
+        run: |-
+          gcloud container clusters get-credentials vrspace-cluster
           
       - name: Deploy docker image to GKE cluster
         run: |-
@@ -51,9 +51,9 @@ jobs:
 #         run: |-
 #           kubectl scale deployment hello-app --replicas=3
       
-#       - name: Ensure that the deployment is successful
-#         run: |-
-#           kubectl get pods
+      - name: Ensure that the deployment is successful
+        run: |-
+          kubectl get pods
           
       - name: Create Service / Expose deployment to an external IP
         run: |-
