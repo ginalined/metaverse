@@ -47,9 +47,9 @@ jobs:
         run: |-
           kubectl create deployment vrspace --image=gcr.io/githubaction-364720/cloudaction
       
-      - name: Scale it to other pods in the cluster (Optional)
-        run: |-
-          kubectl scale deployment hello-app --replicas=3
+#       - name: Scale it to other pods in the cluster (Optional)
+#         run: |-
+#           kubectl scale deployment hello-app --replicas=3
       
       - name: Ensure that the deployment is successful
         run: |-
