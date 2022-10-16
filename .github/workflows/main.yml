@@ -35,17 +35,17 @@ jobs:
         run: |-
           gcloud config set compute/zone us-central1-a
             
-      - name: Create a GKE cluster
-        run: |-
-          gcloud container clusters create vrspace-cluster
+#       - name: Create a GKE cluster
+#         run: |-
+#           gcloud container clusters create vrspace-cluster
           
-      - name: Ensure connection GKE cluster
-        run: |-
-          gcloud container clusters get-credentials vrspace-cluster
+#       - name: Ensure connection GKE cluster
+#         run: |-
+#           gcloud container clusters get-credentials vrspace-cluster
           
-      - name: Deploy docker image to GKE cluster
-        run: |-
-          kubectl create deployment vrspace --image=gcr.io/githubaction-364720/cloudaction
+#       - name: Deploy docker image to GKE cluster
+#         run: |-
+#           kubectl create deployment vrspace --image=gcr.io/githubaction-364720/cloudaction
       
 #       - name: Scale it to other pods in the cluster (Optional)
 #         run: |-
