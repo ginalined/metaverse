@@ -57,7 +57,7 @@ jobs:
           
       - name: Create Service / Expose deployment to an external IP
         run: |-
-          kubectl expose deployment vrspace --name=vrspace-service --type=LoadBalancer --port=80 --target-port=8080
+          kubectl expose deployment vrspace --name=vrspace-service --type=LoadBalancer --port=8080 --target-port=8080
           
       - name: Get external IP of the deployment
         run: |-
