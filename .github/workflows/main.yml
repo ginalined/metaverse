@@ -43,9 +43,9 @@ jobs:
         run: |-
           gcloud container clusters get-credentials vrspace-cluster
           
-      - name: Deploy docker image to GKE cluster
-        run: |-
-          kubectl create deployment vrspace --image=gcr.io/githubaction-364720/cloudaction
+#       - name: Deploy docker image to GKE cluster
+#         run: |-
+#           kubectl create deployment vrspace --image=gcr.io/githubaction-364720/cloudaction
       
 #       - name: Scale it to other pods in the cluster (Optional)
 #         run: |-
