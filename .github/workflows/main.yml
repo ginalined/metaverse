@@ -37,17 +37,17 @@ jobs:
         run: |-
           gcloud config set compute/zone us-central1-a
           
-      - name: Build Docker
-        run: |-
-          docker build -t vrspace .
+#       - name: Build Docker
+#         run: |-
+#           docker build -t vrspace .
           
-      - name: Tag Docker
-        run: |-
-          docker tag vrspace gcr.io/githubaction-364720/vrserver:v1
+#       - name: Tag Docker
+#         run: |-
+#           docker tag vrspace gcr.io/githubaction-364720/vrserver:v1
           
-      - name: Push Docker
-        run: |-
-          docker push gcr.io/githubaction-364720/vrserver:v1
+#       - name: Push Docker
+#         run: |-
+#           docker push gcr.io/githubaction-364720/vrserver:v1
 
 
             
@@ -61,7 +61,7 @@ jobs:
           
       - name: Deploy docker image to GKE cluster
         run: |-
-          kubectl create deployment vrspace --image=gcr.io/githubaction-364720/vrserver:v1
+          kubectl create deployment vrspace --image=gcr.io/githubaction-364720/vr
       
 #       - name: Scale it to other pods in the cluster (Optional)
 #         run: |-
