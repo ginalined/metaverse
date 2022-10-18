@@ -35,7 +35,7 @@ jobs:
           
       - name: Create Local Zone
         run: |-
-          gcloud config set compute/zone us-central1-a
+          gcloud config set compute/zone us-central1-b
           
 #       - name: Build Docker
 #         run: |-
@@ -48,8 +48,6 @@ jobs:
 #       - name: Push Docker
 #         run: |-
 #           docker push gcr.io/githubaction-364720/vrserver:v1
-
-
             
       - name: Create a GKE cluster
         run: |-
@@ -57,11 +55,11 @@ jobs:
           
       - name: Ensure connection GKE cluster
         run: |-
-          gcloud container clusters get-credentials vrspace-two
+          gcloud container clusters get-credentials vrspace-cluster
           
       - name: Deploy docker image to GKE cluster
         run: |-
-          kubectl create deployment vrspace --image=gcr.io/githubaction-364720/vr
+          kubectl create deployment vrspace --image=gcr.io/githubaction-364720/vrserver:v1
       
 #       - name: Scale it to other pods in the cluster (Optional)
 #         run: |-
