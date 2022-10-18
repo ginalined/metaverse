@@ -57,7 +57,7 @@ jobs:
           
       - name: Ensure connection GKE cluster
         run: |-
-          gcloud container clusters get-credentials vrspace-cluster
+          gcloud container clusters get-credentials vrspace-two
           
       - name: Deploy docker image to GKE cluster
         run: |-
