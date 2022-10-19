@@ -10,6 +10,8 @@ env:
   Project_Name : githubaction-364720
   Project_Email : githubactionmanager@githubaction-364720.iam.gserviceaccount.com
   Cluster_name : vrspace-two
+  Server_Name : vrspace
+  Service_Name : vrspace-service
 jobs:
   deploy:
     name: Deploying 
@@ -56,17 +58,13 @@ jobs:
         run: |-
           docker push gcr.io/${{ env.Project_Name }}/vrserver
             
-#       - name: Create a GKE cluster
-#         run: |-
-#           gcloud container clusters create vrspace-two
-          
       - name: Ensure connection GKE cluster
         run: |-
           gcloud container clusters get-credentials vrspace-two
           
       - name: Deploy docker image to GKE cluster
         run: |-
-          kubectl create deployment vrspace --image=gcr.io/${{ env.Project_Name }}/vrserver
+          kubectl create deployment ${{ env.Server_Name }} --image=gcr.io/${{ env.Project_Name }}/vrserver
       
 #       - name: Scale it to other pods in the cluster (Optional)
 #         run: |-
@@ -78,7 +76,7 @@ jobs:
           
       - name: Create Service / Expose deployment to an external IP
         run: |-
-          kubectl expose deployment vrspace --name=vrspace-service --type=LoadBalancer --port=8080 --target-port=8080
+          kubectl expose deployment ${{ env.Server_Name }} --name=${{ env.Service_Name }} --type=LoadBalancer --port=80 --target-port=8080
           
       - name: Get external IP of the deployment
         run: |-
