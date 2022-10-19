@@ -5,6 +5,11 @@ on:
   push:
     branches:
       - master
+
+envs:
+  Project_Name : githubaction-364720
+  Project_Email : githubactionmanager@githubaction-364720.iam.gserviceaccount.com
+  Cluster_name : vrspace-two
 jobs:
   deploy:
     name: Deploying 
@@ -17,17 +22,15 @@ jobs:
       - name: Setting up
         uses: google-github-actions/setup-gcloud@main
         with:
-          version: '286.0.0'
           service_account_key: ${{ secrets.GCP_SA_KEY_JSON }}
-          service_account_email: "githubactionmanager@githubaction-364720.iam.gserviceaccount.com"
-          project_id: githubaction-364720
+          service_account_email: $Project_Email
+          export_default_credentials: true
+          project_id: $Project_Name
           
 #       - name: Building (🏗)
 #         run: |-
 #           gcloud builds submit \
 #             --tag gcr.io/githubaction-364720/cloudaction
-
-
             
       - name: Set Local Region
         run: |-
@@ -36,18 +39,22 @@ jobs:
       - name: Create Local Zone
         run: |-
           gcloud config set compute/zone us-central1-b
+
+      - name: Auth Docker
+        run: |-
+          gcloud auth configure-docker -q
           
-#       - name: Build Docker
-#         run: |-
-#           docker build -t vrspace .
+      - name: Build Docker
+        run: |-
+          docker build -t vrspace .
           
-#       - name: Tag Docker
-#         run: |-
-#           docker tag vrspace gcr.io/githubaction-364720/vrserver:v1
+      - name: Tag Docker
+        run: |-
+          docker tag vrspace gcr.io/$Project_Name/vrserver
           
-#       - name: Push Docker
-#         run: |-
-#           docker push gcr.io/githubaction-364720/vrserver:v1
+      - name: Push Docker
+        run: |-
+          docker push gcr.io/$Project_Name/vrserver
             
 #       - name: Create a GKE cluster
 #         run: |-
@@ -59,7 +66,7 @@ jobs:
           
       - name: Deploy docker image to GKE cluster
         run: |-
-          kubectl create deployment vrspace --image=gcr.io/githubaction-364720/vrserver
+          kubectl create deployment vrspace --image=gcr.io/$Project_Name/vrserver
       
 #       - name: Scale it to other pods in the cluster (Optional)
 #         run: |-
