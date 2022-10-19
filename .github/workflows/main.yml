@@ -6,7 +6,7 @@ on:
     branches:
       - master
 
-envs:
+env:
   Project_Name : githubaction-364720
   Project_Email : githubactionmanager@githubaction-364720.iam.gserviceaccount.com
   Cluster_name : vrspace-two
