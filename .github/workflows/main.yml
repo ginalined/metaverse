@@ -23,9 +23,9 @@ jobs:
         uses: google-github-actions/setup-gcloud@main
         with:
           service_account_key: ${{ secrets.GCP_SA_KEY_JSON }}
-          service_account_email: $Project_Email
+          service_account_email: ${{ env.Project_Email }}
           export_default_credentials: true
-          project_id: $Project_Name
+          project_id: ${{ env.Project_Name }}
           
 #       - name: Building (🏗)
 #         run: |-
@@ -50,11 +50,11 @@ jobs:
           
       - name: Tag Docker
         run: |-
-          docker tag vrspace gcr.io/$Project_Name/vrserver
+          docker tag vrspace gcr.io/${{ env.Project_Name }}/vrserver
           
       - name: Push Docker
         run: |-
-          docker push gcr.io/$Project_Name/vrserver
+          docker push gcr.io/${{ env.Project_Name }}/vrserver
             
 #       - name: Create a GKE cluster
 #         run: |-
@@ -66,7 +66,7 @@ jobs:
           
       - name: Deploy docker image to GKE cluster
         run: |-
-          kubectl create deployment vrspace --image=gcr.io/$Project_Name/vrserver
+          kubectl create deployment vrspace --image=gcr.io/${{ env.Project_Name }}/vrserver
       
 #       - name: Scale it to other pods in the cluster (Optional)
 #         run: |-
