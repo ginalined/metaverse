@@ -44,8 +44,8 @@ jobs:
           uses: appleboy/ssh-action@master
           with:
             host: ${{ secrets.SSH_HOST }} 
-            username: ${{ secrets.SSH_HOSTNAME}}
-            key: ${{ secrets.ED_KEY }} 
+            username: ${{ secrets.SSH_USER}}
+            key: ${{ secrets.ED225_KEY }} 
             port: 22
             #TODO: add unit test script here
             script: | 
