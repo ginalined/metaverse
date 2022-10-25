@@ -12,7 +12,7 @@ env:
   Cluster_name : vrspace-cluster
   Server_Name : vrspace1
   Service_Name : vrspace-service1
-  URL: "http://35.225.117.79/content/worlds/solipsisworld/movements.html"
+  URL: "/content/worlds/solipsisworld/movements.html" #"http://35.225.117.79/
 
 jobs:
   unittest:
@@ -71,7 +71,9 @@ jobs:
               kubectl create deployment ${{ env.Server_Name }} --image=gcr.io/${{ env.Project_Name }}/vrserver
               kubectl get pods
               kubectl expose deployment ${{ env.Server_Name }} --name=${{ env.Service_Name }} --type=LoadBalancer --port=80 --target-port=8080
-              kubectl get service
+              kubectl get services {{ env.Service_Name }} | awk '{ print $4 }' | tail -1 > temp.txt
+              /home/metaverseops/testproject/code/webapp_test.py temp.txt
+
 
 
 
