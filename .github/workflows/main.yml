@@ -8,10 +8,10 @@ on:
 
 env:
   Name : vrproject
-  Project_Name : githubaction-364720
-  Cluster_name : vrspace-two
-  Server_Name : vrspace
-  Service_Name : vrspace-service
+  Project_Name : metaverse-363005
+  Cluster_name : vrspace-cluster
+  Server_Name : vrspace1
+  Service_Name : vrspace-service1
   URL: "http://35.225.117.79/content/worlds/solipsisworld/movements.html"
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
             version: '286.0.0'
             service_account_key: ${{ secrets.GCP_KEY }}
             service_account_email: ${{ secrets.SERVICE_EMAIL }}
-            project_id:  metaverse-363005
+            project_id:  ${{ env.Project_Name }}
             
         - name: Deploy with rsync
           run: rsync -avz -e "ssh -p 22" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/metaverseops/project/${{ env.Name }} --delete
@@ -57,6 +57,12 @@ jobs:
               docker build -t vrspace .
               docker tag vrspace gcr.io/${{ env.Project_Name }}/vrserver
               docker push gcr.io/${{ env.Project_Name }}/vrserver
+
+              gcloud container clusters get-credentials ${{ env.Cluster_name }}
+              kubectl create deployment ${{ env.Server_Name }} --image=gcr.io/${{ env.Project_Name }}/vrserver
+              kubectl get pods
+              kubectl expose deployment ${{ env.Server_Name }} --name=${{ env.Service_Name }} --type=LoadBalancer --port=80 --target-port=8080
+              kubectl get service
 
 
 
