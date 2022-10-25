@@ -12,6 +12,7 @@ env:
   Cluster_name : vrspace-two
   Server_Name : vrspace
   Service_Name : vrspace-service
+  URL: "http://35.225.117.79/content/worlds/solipsisworld/movements.html"
 
 jobs:
   unittest:
@@ -49,8 +50,7 @@ jobs:
             port: 22
             #TODO: add unit test script here
             script: | 
-              cd project
-              ls
+              /home/metaverseops/testproject/code/webapp_test.py ${{ env.URL }}
 
            
 
