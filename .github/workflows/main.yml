@@ -12,6 +12,7 @@ env:
   Cluster_name : vrspace-two
   Server_Name : vrspace
   Service_Name : vrspace-service
+  URL: "http://35.225.117.79/content/worlds/solipsisworld/movements.html"
 
 jobs:
   unittest:
@@ -39,21 +40,41 @@ jobs:
             
         - name: Deploy with rsync
           run: rsync -avz -e "ssh -p 22" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/metaverseops/project/${{ env.Name }} --delete
-        
-        - name: Start Server
+
+
+        - name: Build Docker
           uses: appleboy/ssh-action@master
           with:
             host: ${{ secrets.SSH_HOST }} 
             username: ${{ secrets.SSH_USER }}
             key: ${{ secrets.RSA_KEY }} 
             port: 22
-            #TODO: add unit test script here
             script: | 
-              cd project
-              ls
+              cd /home/metaverseops/project/${{ env.Name }}
+              gcloud config set compute/region us-central1
+              gcloud config set compute/zone us-central1-b
+              gcloud auth configure-docker -q
+              docker build -t vrspace .
+              docker tag vrspace gcr.io/${{ env.Project_Name }}/vrserver
+              docker push gcr.io/${{ env.Project_Name }}/vrserver
 
-           
 
+
+        
+        # - name: Start Server
+        #   uses: appleboy/ssh-action@master
+        #   with:
+        #     host: ${{ secrets.SSH_HOST }} 
+        #     username: ${{ secrets.SSH_USER }}
+        #     key: ${{ secrets.RSA_KEY }} 
+        #     port: 22
+        #     #TODO: add unit test script here
+        #     script: | 
+        #       /home/metaverseops/testproject/code/webapp_test.py ${{ env.URL }}
+
+              
+
+          
           
 # #       - name: Building (🏗)
 # #         run: |-
