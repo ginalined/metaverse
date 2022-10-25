@@ -42,35 +42,22 @@ jobs:
           run: rsync -avz -e "ssh -p 22" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/metaverseops/project/${{ env.Name }} --delete
 
 
+        - name: Auth Docker
+          run: |-
+            gcloud auth configure-docker -q
+            
         - name: Build Docker
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.SSH_HOST }} 
-            username: ${{ secrets.SSH_USER }}
-            key: ${{ secrets.RSA_KEY }} 
-            port: 22
-            script: | 
-              cd /home/metaverseops/project/${{ env.Name }}
-              gcloud config set compute/region us-central1
-              gcloud config set compute/zone us-central1-a
-              gcloud auth configure-docker -q
-              docker build -t vrspace .
-              docker tag vrspace gcr.io/${{ env.Project_Name }}/vrserver
-
-
+          run: |-
+            docker build -t vrspace .
+            
+        - name: Tag Docker
+          run: |-
+            docker tag vrspace gcr.io/${{ env.Project_Name }}/vrserver
+            
         - name: Push Docker
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.SSH_HOST }} 
-            username: ${{ secrets.SSH_USER }}
-            key: ${{ secrets.RSA_KEY }} 
-            port: 22
-            script: | 
-              cd /home/metaverseops/project/${{ env.Name }}
-              gcloud config set compute/region us-central1
-              gcloud config set compute/zone us-central1-a
-              gcloud auth configure-docker -q
-              docker push gcr.io/${{ env.Project_Name }}/vrserver
+          run: |-
+            docker push gcr.io/${{ env.Project_Name }}/vrserver
+
 
         - name: Deploy Docker
           uses: appleboy/ssh-action@master
