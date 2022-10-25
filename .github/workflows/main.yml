@@ -52,12 +52,34 @@ jobs:
             script: | 
               cd /home/metaverseops/project/${{ env.Name }}
               gcloud config set compute/region us-central1
-              gcloud config set compute/zone us-central1-b
+              gcloud config set compute/zone us-central1-a
               gcloud auth configure-docker -q
               docker build -t vrspace .
               docker tag vrspace gcr.io/${{ env.Project_Name }}/vrserver
+
+
+        - name: Push Docker
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.SSH_HOST }} 
+            username: ${{ secrets.SSH_USER }}
+            key: ${{ secrets.RSA_KEY }} 
+            port: 22
+            script: | 
+              cd /home/metaverseops/project/${{ env.Name }}
+              gcloud config set compute/region us-central1
+              gcloud config set compute/zone us-central1-a
+              gcloud auth configure-docker -q
               docker push gcr.io/${{ env.Project_Name }}/vrserver
 
+        - name: Deploy Docker
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.SSH_HOST }} 
+            username: ${{ secrets.SSH_USER }}
+            key: ${{ secrets.RSA_KEY }} 
+            port: 22
+            script: | 
               gcloud container clusters get-credentials ${{ env.Cluster_name }}
               kubectl create deployment ${{ env.Server_Name }} --image=gcr.io/${{ env.Project_Name }}/vrserver
               kubectl get pods
