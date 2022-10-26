@@ -1,5 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 # .github/workflows/deploy.yml
+
 name: Deploy Metaverse
 on:
   push:
@@ -10,8 +11,8 @@ env:
   Name : vrproject
   Project_Name : metaverse-363005
   Cluster_name : vrspace-cluster
-  Server_Name : vrspace1
-  Service_Name : vrspace-service1
+  Server_Name : vrspace2
+  Service_Name : vrspace-service2
   URL: "/content/worlds/solipsisworld/movements.html" #"http://35.225.117.79/
 
 jobs:
